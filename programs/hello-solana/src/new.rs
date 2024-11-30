@@ -12,7 +12,7 @@ pub mod hello_solana {
         let data_account = &mut ctx.accounts.data_account;
         let content_account = &mut ctx.accounts.content_account;
 
-        content_account.content = message.clone();
+        content_account.content = message;
         data_account.hello = hello;
         data_account.message = message;
 

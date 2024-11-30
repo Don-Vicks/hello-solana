@@ -10,6 +10,7 @@ describe("hello-solana", () => {
 
   const signer = anchor.web3.Keypair.generate();
   const data_account = anchor.web3.Keypair.generate();
+  const content_account = anchor.web3.Keypair.generate();
 
   it("Is initialized!", async () => {
     await program.provider.connection.confirmTransaction(await program.provider.connection.requestAirdrop(signer.publicKey, 100*anchor.web3.LAMPORTS_PER_SOL), 'finalized');
@@ -19,13 +20,15 @@ describe("hello-solana", () => {
     const tx = await program.methods.initialize("Hello", "Solana")
     .accounts({
       signer : signer.publicKey,
-      dataAccount: data_account.publicKey
+      dataAccount: data_account.publicKey,
+      contentAccount: content_account.publicKey
     })
-    .signers([signer, data_account])
+    .signers([signer, data_account, content_account])
     .rpc();
     console.log("Your transaction signature", tx);
     const dataAccount = await program.account.dataAccount.fetch(data_account.publicKey);
-    console.log("Data Account: ", dataAccount)
+    const contentAccount = await program.account.contentAccount.fetch(content_account.publicKey);
+    console.log("Data Account: ", dataAccount, "Content Account: ", contentAccount)
     //console.log("Your transaction signature", tx);
   });
 
